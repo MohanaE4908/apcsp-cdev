@@ -25,7 +25,7 @@ void printAllStudents(struct Student students[], int num)
   // call printStudent for each student in students
   for(int i = 0; i < num; i++)
   {
-    printf("-----Student-----");
+    printf("\n-----Student %d -----\n", i);
     printStudent(&students[i]);
   }
 }
