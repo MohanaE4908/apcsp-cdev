@@ -18,26 +18,33 @@ int numStudents = 0;
 // holds the student pointer array
 Student* students[100] = {0};
 
+
 void createStudent(char* fname, char* lname, int age, int id)
 {
   // createStudent dynamically creates a Student on the heap and adds that
   // student to the student array
   //  - the firstName and lastName strings should be dynamically created
   //    based on the size of the fname and lname args
- 
-  Student *st = (Student* )malloc(sizeof(Student));
+  struct Student *new_student = (Student* )malloc(sizeof(Student));
 
-  st->firstName = (char*)malloc((strlen(fname)+1)* sizeof(char));
-  st->lastName = (char*)malloc((strlen(lname)+1)* sizeof(char));
+  new_student->firstName = (char*)malloc(sizeof(&fname));
+  new_student->lastName = (char*)malloc(sizeof(&lname));
 
-  strcpy(st->firstName, fname);
-  strcpy(st->lastName, lname); 
+  strcpy(new_student->firstName, fname);
+  strcpy(new_student->lastName, lname); 
 
-  st->age = age;
-  st->id = id;
+  new_student->age = age;
+  new_student->id = id;
 
-  students[numStudents] = st;
-
+  for (int i = 0; i < 100; i++)
+  {
+    if(students[i] == NULL)
+    {
+      Student[i] = new_student;
+      break;
+    }
+    
+  }
   numStudents++;  
 
 
@@ -47,8 +54,8 @@ void createStudent(char* fname, char* lname, int age, int id)
 void deleteStudent(Student* student)
 {
   // free the memory associated with a student including the strings
-free(student ->firstName);
-free(student ->lastName);
+free(str->fname);
+free(str->lname);
 free(student);
 }
 
@@ -57,7 +64,7 @@ void deleteStudents()
 {
   // iterate over the students array deleting every student and setting the pointer
   // values to 0 and adjusting the numStudents to 0
-for(int i = 0;i < numStudents;i++)
+for(i = 0;i < 100;i++)
 {
   deleteStudent(students[i]);
   students[i] = 0;
@@ -66,8 +73,6 @@ numStudents = 0;
 }
 
 
-
-char* FILE_NAME = "studentdata.txt";
 void saveStudents(int key)
 {
   // save all students in the student array to a file 'studentdata.txt' overwriting
@@ -76,73 +81,55 @@ void saveStudents(int key)
   //       tom thumb 15 1234 
   //       james dean 21 2345 
   //       katy jones 18 4532
-
-FILE* fp;
-fp = fopen("studentdata.txt", "w");
+fp = fopen("w");
 char buff[256];
 
-
-if(fp)
+for(i = 0;i < 100;i++)
 {
-  for(int i = 0;i < numStudents;i++)
-  {
-    sprintf(buff, "%s %s %d %ld", students[i]->firstName, students[i]->lastName, students[i]->age, students[i]->id);
-    if (key != 0)
-      caesarEncrypt(buff, key);
-    printf("saving: %s\n", buff);
-
-
-    fprintf(fp, "%s\n", buff);
-
-
-  }
-  fclose(fp);
+  student* student = students[i];
+  sprintf(buff, "%s %s %d %ld", st->fname, st->lname, st->age, st->id);
 }
 
+if (key != 0)
+{
+  caesarencrypt(buff, key);
 }
 
-
+fprintf(fp, %s\n, buff);
+fclose(fp);
 
 void loadStudents(int key)
 {
-
-FILE* fp;
-fp = fopen("studentdata.txt", "w");
-  // load the students from the data file overwriting all exisiting students in memory
-
-int age;
-long id;
 
 char b1[256];
 char b2[256];
 char b3[256];
 char b4[256];
 
-int match = (fscanf(fp, "%s %s %s %s" , b1, b2, b3, b4));
-
-
- 
-if (fp)
+  // load the students from the data file overwriting all exisiting students in memory
+if (numStudents > 0)
 {
-  if (match == 4)
-  {
+  deleteStudents();
+}
+
+//open file
+
+if(fp)
+{
+  if (match ==4)
+  { 
+    int match = (fscanf(fp, "%s %s %s %s", b1, b2, b3, b4);
+
     if (key != 0)
     {
       caesarDecrypt(b1, key);
       caesarDecrypt(b2, key);
       caesarDecrypt(b3, key);
       caesarDecrypt(b4, key);
-    
-      sscanf(b3,"%d", &age);
-      sscanf(b4,"%ld", &id);
-
-      createStudent(b1, b2, age, id);
     }
-  
   }
-
- }
 }
+
 
 void printStudent(Student* student)
 {
@@ -158,9 +145,7 @@ void printStudents()
     printf("\n----- student %d ------\n", i);
     printStudent(students[i]);
   }
-
 }
-
 
 
 
